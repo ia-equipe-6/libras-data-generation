@@ -1,0 +1,23 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31313.79
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "libras-data-generation", "libras-data-generation.pyproj", "{281D5CE6-3A8B-46FB-87D4-81E3A45D14ED}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{281D5CE6-3A8B-46FB-87D4-81E3A45D14ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{281D5CE6-3A8B-46FB-87D4-81E3A45D14ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B2B04A78-D917-4DF9-AAF0-112A59532F28}
+	EndGlobalSection
+EndGlobal
