@@ -51,9 +51,9 @@ files = files.apply(lambda f: os.path.abspath(os.path.join(args.folder, f)))
 from ia import OpenPose
 
 openpose = OpenPose()
-#openpose.processIA(words, files)
+openpose.processIA(words, files)
 
-#vdg.processVideoData(words, files)
+vdg.processVideoData(words, files)
 dstGenerate.generateDataset(words, files)
 
-#print(subprocess.check_output(args))
+print("FIM")
