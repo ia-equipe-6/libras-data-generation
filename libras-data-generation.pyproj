@@ -30,7 +30,22 @@
     <Compile Include="ia\baseIA.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ia\openPose.py">
+    <Compile Include="ia\multipleOpenCVIA.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ia\openCVBase.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ia\openPoseBody25b.py" />
+    <Compile Include="ia\openPoseHand.py" />
+    <Compile Include="ia\openPoseMPII.py" />
+    <Compile Include="ia\openPoseCOCO.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ia\openPoseEXE.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ia\openPoseBody25.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ia\__init__.py">

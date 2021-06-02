@@ -48,10 +48,15 @@ files = inputDataset[args.wordFile]
 files = files.apply(lambda f: f.replace(".swf", ".mp4"))
 files = files.apply(lambda f: os.path.abspath(os.path.join(args.folder, f)))
 
-from ia import OpenPose
+from ia import MultipleOpenCVAI, OpenPoseBody25, OpenPoseCOCO, OpenPoseBody25B, OpenPoseMPII
 
-openpose = OpenPose()
-openpose.processIA(words, files)
+#openpose = OpenPose()
+multipleAI = MultipleOpenCVAI()
+multipleAI.addAI(OpenPoseBody25())
+multipleAI.addAI(OpenPoseCOCO())
+multipleAI.addAI(OpenPoseBody25B())
+multipleAI.addAI(OpenPoseMPII())
+multipleAI.processIA(words, files)
 
 vdg.processVideoData(words, files)
 dstGenerate.generateDataset(words, files)

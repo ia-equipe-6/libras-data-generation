@@ -5,6 +5,13 @@ class BaseIA(object):
     __metaclass__ = ABCMeta
 
 
-    @abstractmethod
     def processIA(self, listWords: list, listVideos: list):
-        pass
+        print("Processando IA")
+
+        for index in range(listVideos.count()):
+            word = listWords[index]
+            video = listVideos[index]
+            self.processIAItem(word, video)
+
+    @abstractmethod
+    def processIAItem(self, word: str, video: str): pass
