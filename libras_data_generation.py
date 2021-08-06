@@ -48,17 +48,24 @@ files = inputDataset[args.wordFile]
 files = files.apply(lambda f: f.replace(".swf", ".mp4"))
 files = files.apply(lambda f: os.path.abspath(os.path.join(args.folder, f)))
 
-from ia import MultipleOpenCVAI, OpenPoseBody25, OpenPoseCOCO, OpenPoseBody25B, OpenPoseMPII
+from ia import MultipleOpenCVAI, MPHolistic, OpenPoseBody25, OpenPoseCOCO, OpenPoseBody25B, OpenPoseMPII, OpenPoseHand
 
 #openpose = OpenPose()
-multipleAI = MultipleOpenCVAI()
-multipleAI.addAI(OpenPoseBody25())
-multipleAI.addAI(OpenPoseCOCO())
-multipleAI.addAI(OpenPoseBody25B())
-multipleAI.addAI(OpenPoseMPII())
-multipleAI.processIA(words, files)
+#multipleAI = MultipleOpenCVAI(OpenPoseHand())
+#multipleAI.addAI(OpenPoseBody25())
+#multipleAI.addAI(OpenPoseCOCO())
+#multipleAI.addAI(OpenPoseBody25B())
+#multipleAI.addAI(OpenPoseMPII())
 
-vdg.processVideoData(words, files)
-dstGenerate.generateDataset(words, files)
+#multipleAI = MultipleOpenCVAI(OpenPoseCOCO())
+
+ai = MPHolistic()
+ai.processIA(words, files)
+
+#vdg.processVideoData(words, files)
+#dstGenerate.generateDataset(words, files)
+
+
+
 
 print("FIM")
