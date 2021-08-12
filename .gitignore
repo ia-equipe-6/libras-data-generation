@@ -8,6 +8,7 @@ __pycache__/
 *.json
 videos/
 ia-gen/
+output_jsons/
 
 # C extensions
 *.so

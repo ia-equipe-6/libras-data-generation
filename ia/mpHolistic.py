@@ -5,6 +5,7 @@ import uuid
 import mediapipe as mp
 from pathlib import Path
 from ia import BaseIA
+import unicodedata
 
 
 mp_drawing = mp.solutions.drawing_utils
@@ -21,6 +22,7 @@ class MPHolistic(BaseIA):
         output = os.path.abspath(os.path.join('./output_jsons', word))
         output = output.replace('?', '').replace('.', '')
         frame = 1
+        wordId = str(uuid.uuid4())
 
         with mp_holistic.Holistic(static_image_mode=True, model_complexity=2) as holistic:
             while (cv2.waitKey(1) < 0):
@@ -48,7 +50,8 @@ class MPHolistic(BaseIA):
                 if results.pose_landmarks:
                     print("Word: " + word + ", frame: " + str(frame) + ", time: " + str(time))
 
-                line = [str(uuid.uuid4()),
+                line = [
+                    wordId,
                     word,
                     fps,
                     frame_count,
@@ -70,8 +73,17 @@ class MPHolistic(BaseIA):
                
     def createLine(self, results, line) -> list:
         line = self.createLinePose(results, line)
-        line = self.createLineHand(results.left_hand_landmarks.landmark, line)
-        line = self.createLineHand(results.right_hand_landmarks.landmark, line)
+
+        if (results.left_hand_landmarks != None):
+            line = self.createLineHand(results.left_hand_landmarks.landmark, line)
+        else:
+            line = self.createLineEmptyHand(line)
+
+        if (results.right_hand_landmarks != None):
+            line = self.createLineHand(results.right_hand_landmarks.landmark, line)
+        else:
+            line = self.createLineEmptyHand(line)
+
         return line
 
     def createLinePose(self, results, line: list) -> list:
@@ -122,6 +134,13 @@ class MPHolistic(BaseIA):
         line.append(results.pose_landmarks.landmark[mp_holistic.PoseLandmark.RIGHT_HIP].y)
 
         return line
+
+    def createLineEmptyHand(self, line: list) -> list:
+        for x in range(40):
+            line.append(0)
+
+        return line
+
 
     def createLineHand(self, landmark, line: list) -> list:
         #line.append(landmark[mp_holistic.HandLandmark.WRIST].x)
@@ -182,10 +201,19 @@ class MPHolistic(BaseIA):
 
         videoPath = Path(video).stem
         imageFile = os.path.join(wordPath, videoPath)
+        imageFile = unicodedata.normalize('NFD', imageFile)\
+           .encode('ascii', 'ignore')\
+           .decode("utf-8")
         
         if (not os.path.isdir(imageFile)):
-            os.mkdir(imageFile)
+            os.makedirs(imageFile)
         
         imageFile = os.path.join(imageFile, "frame_" + str(frame) + ".jpg" )
+
+        imageFile = unicodedata.normalize('NFD', imageFile)\
+           .encode('ascii', 'ignore')\
+           .decode("utf-8")
+
+
         cv2.imwrite(imageFile, annotated_image) 
 

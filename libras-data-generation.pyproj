@@ -12,7 +12,7 @@
     <Name>libras-data-generation</Name>
     <RootNamespace>libras-data-generation</RootNamespace>
     <LaunchProvider>Standard Python launcher</LaunchProvider>
-    <CommandLineArguments>-json videos/ten/palavras.json -f videos/ines/mp4/ -w palavra -wf video -openPose -o dataset.csv</CommandLineArguments>
+    <CommandLineArguments>-json videos/ten/palavras.json -f videos/ten/mp4/ -w palavra -wf video -openPose -o dataset.csv</CommandLineArguments>
     <EnableNativeCodeDebugging>False</EnableNativeCodeDebugging>
     <InterpreterId>Global|PythonCore|3.9</InterpreterId>
     <IsWindowsApplication>False</IsWindowsApplication>
