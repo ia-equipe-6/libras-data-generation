@@ -33,6 +33,7 @@ def process():
     """Processa todos os vídeos e salva o dataset"""
     data = list()
     words = [w for w in os.listdir("videos")] #Busca todas as palvras dentro da pasta 'videos'
+    words.sort()
     
     for word in words:
         wordFolder = os.path.join("videos", word)
@@ -47,6 +48,10 @@ def process():
 def processWord(word, video) -> list:
     """Processa um único vídeo de uma única palavra"""
     global ignored
+
+    if (word == "0"):
+        word = "None"
+
     data = list()
     capture = cv2.VideoCapture(video)
 
@@ -80,6 +85,11 @@ def processWord(word, video) -> list:
             image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
             results = holistic.process(image) #Prever poses
 
+            if (not results.pose_landmarks):
+                #Não reconheceu bem, voltar as cores para RGB para ver se reconhece melhor
+                image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+                results = holistic.process(image)
+
             if results.pose_landmarks:
                 print("Word: " + word + ", frame: " + str(frame) + ", time: " + str(time))
 
@@ -103,6 +113,7 @@ def processWord(word, video) -> list:
             else:
                 #Não reconheceu nada da pose.
                 print("IGNORADO Word: " + word + ", frame: " + str(frame) + ", time: " + str(time))
+                createImage(results, image, output, video + "FALHA.mp4", frame)
                 #frame = frame + 1
                 ignored += 1
 
@@ -390,7 +401,7 @@ def saveData(data):
     df = pd.DataFrame(data, columns=columns)
     df.to_csv(r"./output/words_dataset.csv", index = False)
     print(df)
-    print(ignored)
+    print("Frames ignorados: " + str(ignored))
 
 #Inicia o processo, pelo método process:
 process()
