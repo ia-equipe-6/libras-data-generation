@@ -1,5 +1,22 @@
+"""
+Gera dataset inicial a partir de vídeos.
+
+    Giovanna Lima Marques 
+    Ricardo Augusto Coelho 
+    Tiago Goes Teles 
+    Wellington de Jesus Albuquerque 
+
+Busca vídeos na pasta 'videos', onde deve haver uma pasta por palavra podendo conter vários vídeos por plavra.
+Todas as saídas são feita na pasta output, cada vídeo é gerado uma pasta com todos os frames gerados para verificação.
+O dataset está em um csv dentro da pasta output.
+
+Algumas referências:
+    https://google.github.io/mediapipe/solutions/holistic.html
+    https://colab.research.google.com/drive/16UOYQ9hPM6L5tkq7oQBl1ULJ8xuK5Lae?usp=sharing#scrollTo=BAivyQ_xOtFp
+
+"""
+
 import os
-import sys
 import cv2
 import uuid
 import pandas as pd
@@ -12,15 +29,15 @@ mp_holistic = mp.solutions.holistic
 WITH_Z = True
 ignored = 0
 
-
-
 def process():
+    """Processa todos os vídeos e salva o dataset"""
     data = list()
-    words = [w for w in os.listdir("videos")]
+    words = [w for w in os.listdir("videos")] #Busca todas as palvras dentro da pasta 'videos'
     
     for word in words:
         wordFolder = os.path.join("videos", word)
         wordVideos = [v for v in os.listdir(wordFolder)]
+
         for wordVideo in wordVideos:
             videoFile = os.path.join("videos", word, wordVideo)
             data = data + processWord(word, videoFile)
@@ -28,6 +45,7 @@ def process():
     saveData(data)
 
 def processWord(word, video) -> list:
+    """Processa um único vídeo de uma única palavra"""
     global ignored
     data = list()
     capture = cv2.VideoCapture(video)
@@ -35,16 +53,17 @@ def processWord(word, video) -> list:
     output = os.path.abspath(os.path.join('./output', word))
     output = output.replace('?', '').replace('.', '')
     frame = 1
-    wordId = str(uuid.uuid4())
+    wordId = str(uuid.uuid4()) #Gera um identificador único para o vídeo
 
     with mp_holistic.Holistic(static_image_mode=False, model_complexity=2, min_detection_confidence=0.45) as holistic:
-        while (cv2.waitKey(1) < 0):
-            conected, image = capture.read()
+        while (cv2.waitKey(1) < 0): #Processa cada frame individualmente
+            conected, image = capture.read() #Ler um frame
 
             if not conected:
                 cv2.waitKey()
                 break
 
+            #Obtem dados do vídeo e frame
             fps = capture.get(cv2.CAP_PROP_FPS)
             frame_count = capture.get(cv2.CAP_PROP_FRAME_COUNT)
             duration = 0
@@ -56,13 +75,15 @@ def processWord(word, video) -> list:
 
             image_width = image.shape[1]
             image_height = image.shape[0]
+
+            #Prepara imagem para processo
             image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-    
-            results = holistic.process(image)
+            results = holistic.process(image) #Prever poses
 
             if results.pose_landmarks:
                 print("Word: " + word + ", frame: " + str(frame) + ", time: " + str(time))
 
+                #Cria uma linha do frame com dados do frame/vídeo
                 line = [
                     wordId,
                     word,
@@ -80,12 +101,15 @@ def processWord(word, video) -> list:
                 createImage(results, image, output, video, frame)
                 frame = frame + 1
             else:
+                #Não reconheceu nada da pose.
                 print("IGNORADO Word: " + word + ", frame: " + str(frame) + ", time: " + str(time))
+                #frame = frame + 1
                 ignored += 1
 
     return data
 
 def createLineEmptyValue(line: list, size = 40, value = 0) -> list:
+    """Cria valores vazios por falta de reconhecimento de pose/mão"""
     for x in range(size):
         line.append(value)
 
@@ -93,6 +117,7 @@ def createLineEmptyValue(line: list, size = 40, value = 0) -> list:
 
 
 def createLine(results, line) -> list:
+    """Obtem todas as posições de pose e mão e adiciona na linha do dataset"""
     line = createLinePose(results, line)
 
     if (results.left_hand_landmarks != None):
@@ -108,6 +133,8 @@ def createLine(results, line) -> list:
     return line
 
 def createLinePose(results, line: list) -> list:
+    """Obtem os valores de poses do corpo"""
+
     line.append(results.pose_landmarks.landmark[mp_holistic.PoseLandmark.NOSE].x)
     line.append(results.pose_landmarks.landmark[mp_holistic.PoseLandmark.NOSE].y)
 
@@ -156,6 +183,8 @@ def createLinePose(results, line: list) -> list:
     return line
 
 def createLineHand(landmark, line: list) -> list:
+    """Obtem valores de poses da mão"""
+
     #line.append(landmark[mp_holistic.HandLandmark.WRIST].x)
     #line.append(landmark[mp_holistic.HandLandmark.WRIST].y)
 
@@ -207,6 +236,7 @@ def createLineHand(landmark, line: list) -> list:
     return line
 
 def createImage(results, image, wordPath, video, frame):
+    """Cria a imagem para verificação do processo"""
     annotated_image = image
     mp_drawing.draw_landmarks(annotated_image, results.left_hand_landmarks, mp_holistic.HAND_CONNECTIONS)
     mp_drawing.draw_landmarks(annotated_image, results.right_hand_landmarks, mp_holistic.HAND_CONNECTIONS)
@@ -231,6 +261,8 @@ def createImage(results, image, wordPath, video, frame):
     cv2.imwrite(imageFile, annotated_image)
 
 def getColumns():
+    """Obtem os nomes das colunas para salvar no CSV"""
+
     return [
         "ID",
         "WORD",
@@ -354,10 +386,12 @@ def getColumns():
     ]
 
 def saveData(data):
+    """Salva o dataset gerado"""
     columns = getColumns()
     df = pd.DataFrame(data, columns=columns)
     df.to_csv(r"./output/words_dataset.csv", index = False)
     print(df)
     print(ignored)
 
+#Inicia o processo, pelo método process:
 process()
