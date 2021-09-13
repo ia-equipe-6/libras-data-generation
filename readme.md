@@ -9,7 +9,7 @@ Esse código tem o objetivo de gerar dataset inicial com as poses de vídeos com
 
 ## Processo
 
-Esse código segue os seguintes processos:
+Esse código segue os seguinte processo:
 
 1. Procura todas as pastas dentro da pasta "videos", onde o nome da pasta, será a palavra que cada vídeo representa.
 1. Para cada pasta encontrado, buscará todos os vídeos para ser processado.
@@ -18,7 +18,7 @@ Esse código segue os seguintes processos:
 1. Finalizado o processo de todas as pastas, o dataset é salvo.
 
 
-## Preparando para geração do dataset
+## Geração do dataset
 
 
 1. Clone o repositório.
