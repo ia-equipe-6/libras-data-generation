@@ -20,7 +20,7 @@ Esse código segue os seguinte processo:
 
 ## Geração do dataset
 
-
+1. Instale as [dependências](#Dependências).
 1. Clone o repositório.
     ```cmd
     git clone https://github.com/ia-equipe-6/libras-data-generation.git
@@ -53,9 +53,9 @@ Todas as saídas estarão na pasta "output", incluíndo o CSV gerado.
 Utilize o código de transformação do dataset para treinamento:
 https://github.com/ia-equipe-6/libras-dataset-transform
 
-## Bibliotecas
+## Dependências
 
-Esse código utiliza as seguintes bibliotecas para geração do dataset:
+Esse código foi testado na versão 3.9 do [Python](https://www.python.org/downloads/) e utiliza as seguintes bibliotecas para geração do dataset:
 
 * Pandas
     ```cmd
