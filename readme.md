@@ -58,5 +58,14 @@ https://github.com/ia-equipe-6/libras-dataset-transform
 Esse código utiliza as seguintes bibliotecas para geração do dataset:
 
 * Pandas
+    ```cmd
+    pip install pandas
+    ```
 * OpenCV 
+    ```cmd
+    pip install opencv-python
+    ```
 * MediaPipe
+    ```cmd
+    pip install mediapipe
+    ```
