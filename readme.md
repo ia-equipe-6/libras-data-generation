@@ -1,11 +1,21 @@
 # Gerador DataSet
 
-Esse código tem o objetivo de gerar dataset inicial com as poses de vídeos com sinais em libras.
+Esse código tem o objetivo de gerar dataset inicial com as poses de vídeos com sinais em libras, criando um dataset onde cada linha representa a pose de um único frame de um vídeo.
 
 * Giovanna Lima Marques 
 * Ricardo Augusto Coelho (https://github.com/tiorac)
 * Tiago Goes Teles 
 * Wellington de Jesus Albuquerque 
+
+## Processo
+
+Esse código segue os seguintes processos:
+
+1. Procura todas as pastas dentro da pasta "videos", onde o nome da pasta, será a palavra que cada vídeo representa.
+1. Para cada pasta encontrado, buscará todos os vídeos para ser processado.
+1. Para cada vídeo encontrado, será lido todos os frames do vídeo.
+1. Para cada frame, é processado a identificação de poses via mediapipe e gerado uma linha do dataset e uma imagem de validação.
+1. Finalizado o processo de todas as pastas, o dataset é salvo.
 
 
 ## Preparando para geração do dataset

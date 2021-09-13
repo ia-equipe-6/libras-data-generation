@@ -115,7 +115,6 @@ def createLineEmptyValue(line: list, size = 40, value = 0) -> list:
 
     return line
 
-
 def createLine(results, line) -> list:
     """Obtem todas as posições de pose e mão e adiciona na linha do dataset"""
     line = createLinePose(results, line)
