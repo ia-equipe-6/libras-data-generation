@@ -3,7 +3,7 @@
 Esse código tem o objetivo de gerar dataset inicial com as poses de vídeos com sinais em libras.
 
 * Giovanna Lima Marques 
-* Ricardo Augusto Coelho @tiorac
+* Ricardo Augusto Coelho (https://github.com/tiorac)
 * Tiago Goes Teles 
 * Wellington de Jesus Albuquerque 
 
