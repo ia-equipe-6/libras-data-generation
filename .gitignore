@@ -7,8 +7,9 @@ __pycache__/
 *.csv
 *.json
 videos/
+all_videos/
 ia-gen/
-output_jsons/
+output/
 
 # C extensions
 *.so
