@@ -2,10 +2,46 @@
 
 Esse código tem o objetivo de gerar dataset inicial com as poses de vídeos com sinais em libras, criando um dataset onde cada linha representa a pose de um único frame de um vídeo.
 
-* Giovanna Lima Marques 
-* Ricardo Augusto Coelho (https://github.com/tiorac)
-* Tiago Goes Teles 
-* Wellington de Jesus Albuquerque 
+## Contribuidores
+
+<table>
+  <tr>
+    <td align="center">
+        <img src="https://avatars.githubusercontent.com/u/84801416?s=400&v=4" width="80px;" alt="Giovanna"/>
+        <br/>
+        <sub>
+            <b>Giovanna Lima Marques</b>
+        </sub>
+	</td>
+    <td align="center">
+		<a href="https://github.com/tiorac">
+			<img src="https://avatars.githubusercontent.com/u/1957382?v=4" width="80px;" alt="tiorac"/>
+			<br/>
+			<sub>
+				<b>Ricardo Augusto Coelho</b>
+			</sub>
+		</a>
+	</td>
+    <td align="center">
+		<a href="https://github.com/tejolteon">
+			<img src="https://avatars.githubusercontent.com/u/24478131?v=4" width="80px;" alt="tejolteon"/>
+			<br/>
+			<sub>
+				<b>Tiago Goes Teles </b>
+			</sub>
+		</a>
+	</td>
+    <td align="center">
+		<a href="https://github.com/wellingtonalb">
+			<img src="https://avatars.githubusercontent.com/u/64939751?v=4" width="80px;" alt="wellingtonalb"/>
+			<br/>
+			<sub>
+				<b>Wellington de Jesus Albuquerque </b>
+			</sub>
+		</a>
+	</td>
+  </tr>
+</table>
 
 ## Processo
 
