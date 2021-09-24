@@ -12,7 +12,7 @@ O dataset está em um csv dentro da pasta output.
 
 Algumas referências:
     https://google.github.io/mediapipe/solutions/holistic.html
-    https://colab.research.google.com/drive/16UOYQ9hPM6L5tkq7oQBl1ULJ8xuK5Lae?usp=sharing#scrollTo=BAivyQ_xOtFp
+    https://colab.research.google.com/drive/16UOYQ9hPM6L5tkq7oQBl1ULJ8xuK5Lae?usp=sharing#scrollTo=BAivyQOtFp
 
 """
 
@@ -129,16 +129,19 @@ def createLineEmptyValue(line: list, size = 40, value = 0) -> list:
 def createLine(results, line) -> list:
     """Obtem todas as posições de pose e mão e adiciona na linha do dataset"""
     line = createLinePose(results, line)
+    handSize = 40
+    if (WITH_Z):
+        handSize = 60
 
     if (results.left_hand_landmarks != None):
         line = createLineHand(results.left_hand_landmarks.landmark, line)
     else:
-        line = createLineEmptyValue(line, 40, 0)
+        line = createLineEmptyValue(line, handSize, 0)
 
     if (results.right_hand_landmarks != None):
         line = createLineHand(results.right_hand_landmarks.landmark, line)
     else:
-        line = createLineEmptyValue(line, 40, 0)
+        line = createLineEmptyValue(line, handSize, 0)
 
     return line
 
@@ -147,48 +150,63 @@ def createLinePose(results, line: list) -> list:
 
     line.append(results.pose_landmarks.landmark[mp_holistic.PoseLandmark.NOSE].x)
     line.append(results.pose_landmarks.landmark[mp_holistic.PoseLandmark.NOSE].y)
+    if WITH_Z: line.append(results.pose_landmarks.landmark[mp_holistic.PoseLandmark.NOSE].z)
 
     line.append(results.pose_landmarks.landmark[mp_holistic.PoseLandmark.LEFT_EYE].x)
     line.append(results.pose_landmarks.landmark[mp_holistic.PoseLandmark.LEFT_EYE].y)
+    if WITH_Z: line.append(results.pose_landmarks.landmark[mp_holistic.PoseLandmark.LEFT_EYE].z)
 
     line.append(results.pose_landmarks.landmark[mp_holistic.PoseLandmark.LEFT_EAR].x)
     line.append(results.pose_landmarks.landmark[mp_holistic.PoseLandmark.LEFT_EAR].y)
+    if WITH_Z: line.append(results.pose_landmarks.landmark[mp_holistic.PoseLandmark.LEFT_EAR].z)
 
     line.append(results.pose_landmarks.landmark[mp_holistic.PoseLandmark.RIGHT_EYE].x)
     line.append(results.pose_landmarks.landmark[mp_holistic.PoseLandmark.RIGHT_EYE].y)
+    if WITH_Z: line.append(results.pose_landmarks.landmark[mp_holistic.PoseLandmark.RIGHT_EYE].z)
 
     line.append(results.pose_landmarks.landmark[mp_holistic.PoseLandmark.RIGHT_EAR].x)
     line.append(results.pose_landmarks.landmark[mp_holistic.PoseLandmark.RIGHT_EAR].y)
+    if WITH_Z: line.append(results.pose_landmarks.landmark[mp_holistic.PoseLandmark.RIGHT_EAR].z)
 
     line.append(results.pose_landmarks.landmark[mp_holistic.PoseLandmark.MOUTH_LEFT].x)
     line.append(results.pose_landmarks.landmark[mp_holistic.PoseLandmark.MOUTH_LEFT].y)
+    if WITH_Z: line.append(results.pose_landmarks.landmark[mp_holistic.PoseLandmark.MOUTH_LEFT].z)
 
     line.append(results.pose_landmarks.landmark[mp_holistic.PoseLandmark.MOUTH_RIGHT].x)
     line.append(results.pose_landmarks.landmark[mp_holistic.PoseLandmark.MOUTH_RIGHT].y)
+    if WITH_Z: line.append(results.pose_landmarks.landmark[mp_holistic.PoseLandmark.MOUTH_RIGHT].z)
 
     line.append(results.pose_landmarks.landmark[mp_holistic.PoseLandmark.LEFT_SHOULDER].x)
     line.append(results.pose_landmarks.landmark[mp_holistic.PoseLandmark.LEFT_SHOULDER].y)
+    if WITH_Z: line.append(results.pose_landmarks.landmark[mp_holistic.PoseLandmark.LEFT_SHOULDER].z)
     
     line.append(results.pose_landmarks.landmark[mp_holistic.PoseLandmark.RIGHT_SHOULDER].x)
     line.append(results.pose_landmarks.landmark[mp_holistic.PoseLandmark.RIGHT_SHOULDER].y)
+    if WITH_Z: line.append(results.pose_landmarks.landmark[mp_holistic.PoseLandmark.RIGHT_SHOULDER].z)
 
     line.append(results.pose_landmarks.landmark[mp_holistic.PoseLandmark.LEFT_ELBOW].x)
     line.append(results.pose_landmarks.landmark[mp_holistic.PoseLandmark.LEFT_ELBOW].y)
+    if WITH_Z: line.append(results.pose_landmarks.landmark[mp_holistic.PoseLandmark.LEFT_ELBOW].z)
 
     line.append(results.pose_landmarks.landmark[mp_holistic.PoseLandmark.RIGHT_ELBOW].x)
     line.append(results.pose_landmarks.landmark[mp_holistic.PoseLandmark.RIGHT_ELBOW].y)
+    if WITH_Z: line.append(results.pose_landmarks.landmark[mp_holistic.PoseLandmark.RIGHT_ELBOW].z)
 
     line.append(results.pose_landmarks.landmark[mp_holistic.PoseLandmark.LEFT_WRIST].x)
     line.append(results.pose_landmarks.landmark[mp_holistic.PoseLandmark.LEFT_WRIST].y)
+    if WITH_Z: line.append(results.pose_landmarks.landmark[mp_holistic.PoseLandmark.LEFT_WRIST].z)
 
     line.append(results.pose_landmarks.landmark[mp_holistic.PoseLandmark.RIGHT_WRIST].x)
     line.append(results.pose_landmarks.landmark[mp_holistic.PoseLandmark.RIGHT_WRIST].y)
+    if WITH_Z: line.append(results.pose_landmarks.landmark[mp_holistic.PoseLandmark.RIGHT_WRIST].z)
 
     line.append(results.pose_landmarks.landmark[mp_holistic.PoseLandmark.LEFT_HIP].x)
     line.append(results.pose_landmarks.landmark[mp_holistic.PoseLandmark.LEFT_HIP].y)
+    if WITH_Z: line.append(results.pose_landmarks.landmark[mp_holistic.PoseLandmark.LEFT_HIP].z)
 
     line.append(results.pose_landmarks.landmark[mp_holistic.PoseLandmark.RIGHT_HIP].x)
     line.append(results.pose_landmarks.landmark[mp_holistic.PoseLandmark.RIGHT_HIP].y)
+    if WITH_Z: line.append(results.pose_landmarks.landmark[mp_holistic.PoseLandmark.RIGHT_HIP].z)
 
     return line
 
@@ -200,48 +218,83 @@ def createLineHand(landmark, line: list) -> list:
 
     line.append(landmark[mp_holistic.HandLandmark.THUMB_CMC].x)
     line.append(landmark[mp_holistic.HandLandmark.THUMB_CMC].y)
+    if WITH_Z: line.append(landmark[mp_holistic.HandLandmark.THUMB_CMC].z)
+
     line.append(landmark[mp_holistic.HandLandmark.THUMB_MCP].x)
     line.append(landmark[mp_holistic.HandLandmark.THUMB_MCP].y)
+    if WITH_Z: line.append(landmark[mp_holistic.HandLandmark.THUMB_MCP].z)
+
     line.append(landmark[mp_holistic.HandLandmark.THUMB_IP].x)
     line.append(landmark[mp_holistic.HandLandmark.THUMB_IP].y)
+    if WITH_Z: line.append(landmark[mp_holistic.HandLandmark.THUMB_IP].z)
+
     line.append(landmark[mp_holistic.HandLandmark.THUMB_TIP].x)
     line.append(landmark[mp_holistic.HandLandmark.THUMB_TIP].y)
+    if WITH_Z: line.append(landmark[mp_holistic.HandLandmark.THUMB_TIP].z)
 
     line.append(landmark[mp_holistic.HandLandmark.INDEX_FINGER_MCP].x)
     line.append(landmark[mp_holistic.HandLandmark.INDEX_FINGER_MCP].y)
+    if WITH_Z: line.append(landmark[mp_holistic.HandLandmark.INDEX_FINGER_MCP].z)
+
     line.append(landmark[mp_holistic.HandLandmark.INDEX_FINGER_PIP].x)
     line.append(landmark[mp_holistic.HandLandmark.INDEX_FINGER_PIP].y)
+    if WITH_Z: line.append(landmark[mp_holistic.HandLandmark.INDEX_FINGER_PIP].z)
+
     line.append(landmark[mp_holistic.HandLandmark.INDEX_FINGER_DIP].x)
     line.append(landmark[mp_holistic.HandLandmark.INDEX_FINGER_DIP].y)
+    if WITH_Z: line.append(landmark[mp_holistic.HandLandmark.INDEX_FINGER_DIP].z)
+
     line.append(landmark[mp_holistic.HandLandmark.INDEX_FINGER_TIP].x)
     line.append(landmark[mp_holistic.HandLandmark.INDEX_FINGER_TIP].y)
+    if WITH_Z: line.append(landmark[mp_holistic.HandLandmark.INDEX_FINGER_TIP].z)
 
     line.append(landmark[mp_holistic.HandLandmark.MIDDLE_FINGER_MCP].x)
     line.append(landmark[mp_holistic.HandLandmark.MIDDLE_FINGER_MCP].y)
+    if WITH_Z: line.append(landmark[mp_holistic.HandLandmark.MIDDLE_FINGER_MCP].z)
+
     line.append(landmark[mp_holistic.HandLandmark.MIDDLE_FINGER_PIP].x)
     line.append(landmark[mp_holistic.HandLandmark.MIDDLE_FINGER_PIP].y)
+    if WITH_Z: line.append(landmark[mp_holistic.HandLandmark.MIDDLE_FINGER_PIP].z)
+
     line.append(landmark[mp_holistic.HandLandmark.MIDDLE_FINGER_DIP].x)
     line.append(landmark[mp_holistic.HandLandmark.MIDDLE_FINGER_DIP].y)
+    if WITH_Z: line.append(landmark[mp_holistic.HandLandmark.MIDDLE_FINGER_DIP].z)
+
     line.append(landmark[mp_holistic.HandLandmark.MIDDLE_FINGER_TIP].x)
     line.append(landmark[mp_holistic.HandLandmark.MIDDLE_FINGER_TIP].y)
+    if WITH_Z: line.append(landmark[mp_holistic.HandLandmark.MIDDLE_FINGER_TIP].z)
 
     line.append(landmark[mp_holistic.HandLandmark.RING_FINGER_MCP].x)
     line.append(landmark[mp_holistic.HandLandmark.RING_FINGER_MCP].y)
+    if WITH_Z: line.append(landmark[mp_holistic.HandLandmark.RING_FINGER_MCP].z)
+
     line.append(landmark[mp_holistic.HandLandmark.RING_FINGER_PIP].x)
     line.append(landmark[mp_holistic.HandLandmark.RING_FINGER_PIP].y)
+    if WITH_Z: line.append(landmark[mp_holistic.HandLandmark.RING_FINGER_PIP].z)
+
     line.append(landmark[mp_holistic.HandLandmark.RING_FINGER_DIP].x)
     line.append(landmark[mp_holistic.HandLandmark.RING_FINGER_DIP].y)
+    if WITH_Z: line.append(landmark[mp_holistic.HandLandmark.RING_FINGER_DIP].z)
+
     line.append(landmark[mp_holistic.HandLandmark.RING_FINGER_TIP].x)
     line.append(landmark[mp_holistic.HandLandmark.RING_FINGER_TIP].y)
+    if WITH_Z: line.append(landmark[mp_holistic.HandLandmark.RING_FINGER_TIP].z)
 
     line.append(landmark[mp_holistic.HandLandmark.PINKY_MCP].x)
     line.append(landmark[mp_holistic.HandLandmark.PINKY_MCP].y)
+    if WITH_Z: line.append(landmark[mp_holistic.HandLandmark.PINKY_MCP].z)
+
     line.append(landmark[mp_holistic.HandLandmark.PINKY_PIP].x)
     line.append(landmark[mp_holistic.HandLandmark.PINKY_PIP].y)
+    if WITH_Z: line.append(landmark[mp_holistic.HandLandmark.PINKY_PIP].z)
+
     line.append(landmark[mp_holistic.HandLandmark.PINKY_DIP].x)
     line.append(landmark[mp_holistic.HandLandmark.PINKY_DIP].y)
+    if WITH_Z: line.append(landmark[mp_holistic.HandLandmark.PINKY_DIP].z)
+
     line.append(landmark[mp_holistic.HandLandmark.PINKY_TIP].x)
     line.append(landmark[mp_holistic.HandLandmark.PINKY_TIP].y)
+    if WITH_Z: line.append(landmark[mp_holistic.HandLandmark.PINKY_TIP].z)
 
     return line
 
@@ -270,10 +323,20 @@ def createImage(results, image, wordPath, video, frame):
 
     cv2.imwrite(imageFile, annotated_image)
 
+def generateColumns(columns: list, withZ: bool) -> list:
+    allColumns = list()
+
+    for column in columns:
+        allColumns.append(column + "_X")
+        allColumns.append(column + "_Y")
+        if withZ: allColumns.append(column + "_Z")
+
+    return allColumns
+
 def getColumns():
     """Obtem os nomes das colunas para salvar no CSV"""
 
-    return [
+    columns = [
         "ID",
         "WORD",
         "FPS",
@@ -282,118 +345,70 @@ def getColumns():
         "WIDTH",
         "HEIGHT",
         "FRAME",
-        "TIME",
-        "NOSE_X",
-        "NOSE_Y",
-        "LEFT_EYE_X",
-        "LEFT_EYE_Y",
-        "LEFT_EAR_X",
-        "LEFT_EAR_Y",
-        "RIGHT_EYE_X",
-        "RIGHT_EYE_Y",
-        "RIGHT_EAR_X",
-        "RIGHT_EAR_Y",
-        "MOUTH_LEFT_X",
-        "MOUTH_LEFT_Y",
-        "MOUTH_RIGHT_X",
-        "MOUTH_RIGHT_Y",
-        "LEFT_SHOULDER_X",
-        "LEFT_SHOULDER_Y",
-        "RIGHT_SHOULDER_X",
-        "RIGHT_SHOULDER_Y",
-        "LEFT_ELBOW_X",
-        "LEFT_ELBOW_Y",
-        "RIGHT_ELBOW_X",
-        "RIGHT_ELBOW_Y",
-        "LEFT_WRIST_X",
-        "LEFT_WRIST_Y",
-        "RIGHT_WRIST_X",
-        "RIGHT_WRIST_Y",
-        "LEFT_HIP_X",
-        "LEFT_HIP_Y",
-        "RIGHT_HIP_X",
-        "RIGHT_HIP_Y",
-        "LEFT_HAND_THUMB_CMC_X",
-        "LEFT_HAND_THUMB_CMC_Y",
-        "LEFT_HAND_THUMB_MCP_X",
-        "LEFT_HAND_THUMB_MCP_Y",
-        "LEFT_HAND_THUMB_IP_X",
-        "LEFT_HAND_THUMB_IP_Y",
-        "LEFT_HAND_THUMB_TIP_X",
-        "LEFT_HAND_THUMB_TIP_Y",
-        "LEFT_HAND_INDEX_FINGER_MCP_X",
-        "LEFT_HAND_INDEX_FINGER_MCP_Y",
-        "LEFT_HAND_INDEX_FINGER_PIP_X",
-        "LEFT_HAND_INDEX_FINGER_PIP_Y",
-        "LEFT_HAND_INDEX_FINGER_DIP_X",
-        "LEFT_HAND_INDEX_FINGER_DIP_Y",
-        "LEFT_HAND_INDEX_FINGER_TIP_X",
-        "LEFT_HAND_INDEX_FINGER_TIP_Y",
-        "LEFT_HAND_MIDDLE_FINGER_MCP_X",
-        "LEFT_HAND_MIDDLE_FINGER_MCP_Y",
-        "LEFT_HAND_MIDDLE_FINGER_PIP_X",
-        "LEFT_HAND_MIDDLE_FINGER_PIP_Y",
-        "LEFT_HAND_MIDDLE_FINGER_DIP_X",
-        "LEFT_HAND_MIDDLE_FINGER_DIP_Y",
-        "LEFT_HAND_MIDDLE_FINGER_TIP_X",
-        "LEFT_HAND_MIDDLE_FINGER_TIP_Y",
-        "LEFT_HAND_RING_FINGER_MCP_X",
-        "LEFT_HAND_RING_FINGER_MCP_Y",
-        "LEFT_HAND_RING_FINGER_PIP_X",
-        "LEFT_HAND_RING_FINGER_PIP_Y",
-        "LEFT_HAND_RING_FINGER_DIP_X",
-        "LEFT_HAND_RING_FINGER_DIP_Y",
-        "LEFT_HAND_RING_FINGER_TIP_X",
-        "LEFT_HAND_RING_FINGER_TIP_Y",
-        "LEFT_HAND_PINKY_MCP_X",
-        "LEFT_HAND_PINKY_MCP_Y",
-        "LEFT_HAND_PINKY_PIP_X",
-        "LEFT_HAND_PINKY_PIP_Y",
-        "LEFT_HAND_PINKY_DIP_X",
-        "LEFT_HAND_PINKY_DIP_Y",
-        "LEFT_HAND_PINKY_TIP_X",
-        "LEFT_HAND_PINKY_TIP_Y",
-        "RIGHT_HAND_THUMB_CMC_X",
-        "RIGHT_HAND_THUMB_CMC_Y",
-        "RIGHT_HAND_THUMB_MCP_X",
-        "RIGHT_HAND_THUMB_MCP_Y",
-        "RIGHT_HAND_THUMB_IP_X",
-        "RIGHT_HAND_THUMB_IP_Y",
-        "RIGHT_HAND_THUMB_TIP_X",
-        "RIGHT_HAND_THUMB_TIP_Y",
-        "RIGHT_HAND_INDEX_FINGER_MCP_X",
-        "RIGHT_HAND_INDEX_FINGER_MCP_Y",
-        "RIGHT_HAND_INDEX_FINGER_PIP_X",
-        "RIGHT_HAND_INDEX_FINGER_PIP_Y",
-        "RIGHT_HAND_INDEX_FINGER_DIP_X",
-        "RIGHT_HAND_INDEX_FINGER_DIP_Y",
-        "RIGHT_HAND_INDEX_FINGER_TIP_X",
-        "RIGHT_HAND_INDEX_FINGER_TIP_Y",
-        "RIGHT_HAND_MIDDLE_FINGER_MCP_X",
-        "RIGHT_HAND_MIDDLE_FINGER_MCP_Y",
-        "RIGHT_HAND_MIDDLE_FINGER_PIP_X",
-        "RIGHT_HAND_MIDDLE_FINGER_PIP_Y",
-        "RIGHT_HAND_MIDDLE_FINGER_DIP_X",
-        "RIGHT_HAND_MIDDLE_FINGER_DIP_Y",
-        "RIGHT_HAND_MIDDLE_FINGER_TIP_X",
-        "RIGHT_HAND_MIDDLE_FINGER_TIP_Y",
-        "RIGHT_HAND_RING_FINGER_MCP_X",
-        "RIGHT_HAND_RING_FINGER_MCP_Y",
-        "RIGHT_HAND_RING_FINGER_PIP_X",
-        "RIGHT_HAND_RING_FINGER_PIP_Y",
-        "RIGHT_HAND_RING_FINGER_DIP_X",
-        "RIGHT_HAND_RING_FINGER_DIP_Y",
-        "RIGHT_HAND_RING_FINGER_TIP_X",
-        "RIGHT_HAND_RING_FINGER_TIP_Y",
-        "RIGHT_HAND_PINKY_MCP_X",
-        "RIGHT_HAND_PINKY_MCP_Y",
-        "RIGHT_HAND_PINKY_PIP_X",
-        "RIGHT_HAND_PINKY_PIP_Y",
-        "RIGHT_HAND_PINKY_DIP_X",
-        "RIGHT_HAND_PINKY_DIP_Y",
-        "RIGHT_HAND_PINKY_TIP_X",
-        "RIGHT_HAND_PINKY_TIP_Y",
+        "TIME"]
+
+    toGenerate = [
+        "NOSE",
+        "LEFT_EYE",
+        "LEFT_EAR",
+        "RIGHT_EYE",
+        "RIGHT_EAR",
+        "MOUTH_LEFT",
+        "MOUTH_RIGHT",
+        "LEFT_SHOULDER",
+        "RIGHT_SHOULDER",
+        "LEFT_ELBOW",
+        "RIGHT_ELBOW",
+        "LEFT_WRIST",
+        "RIGHT_WRIST",
+        "LEFT_HIP",
+        "RIGHT_HIP",
+        "LEFT_HAND_THUMB_CMC",
+        "LEFT_HAND_THUMB_MCP",
+        "LEFT_HAND_THUMB_IP",
+        "LEFT_HAND_THUMB_TIP",
+        "LEFT_HAND_INDEX_FINGER_MCP",
+        "LEFT_HAND_INDEX_FINGER_PIP",
+        "LEFT_HAND_INDEX_FINGER_DIP",
+        "LEFT_HAND_INDEX_FINGER_TIP",
+        "LEFT_HAND_MIDDLE_FINGER_MCP",
+        "LEFT_HAND_MIDDLE_FINGER_PIP",
+        "LEFT_HAND_MIDDLE_FINGER_DIP",
+        "LEFT_HAND_MIDDLE_FINGER_TIP",
+        "LEFT_HAND_RING_FINGER_MCP",
+        "LEFT_HAND_RING_FINGER_PIP",
+        "LEFT_HAND_RING_FINGER_DIP",
+        "LEFT_HAND_RING_FINGER_TIP",
+        "LEFT_HAND_PINKY_MCP",
+        "LEFT_HAND_PINKY_PIP",
+        "LEFT_HAND_PINKY_DIP",
+        "LEFT_HAND_PINKY_TIP",
+        "RIGHT_HAND_THUMB_CMC",
+        "RIGHT_HAND_THUMB_MCP",
+        "RIGHT_HAND_THUMB_IP",
+        "RIGHT_HAND_THUMB_TIP",
+        "RIGHT_HAND_INDEX_FINGER_MCP",
+        "RIGHT_HAND_INDEX_FINGER_PIP",
+        "RIGHT_HAND_INDEX_FINGER_DIP",
+        "RIGHT_HAND_INDEX_FINGER_TIP",
+        "RIGHT_HAND_MIDDLE_FINGER_MCP",
+        "RIGHT_HAND_MIDDLE_FINGER_PIP",
+        "RIGHT_HAND_MIDDLE_FINGER_DIP",
+        "RIGHT_HAND_MIDDLE_FINGER_TIP",
+        "RIGHT_HAND_RING_FINGER_MCP",
+        "RIGHT_HAND_RING_FINGER_PIP",
+        "RIGHT_HAND_RING_FINGER_DIP",
+        "RIGHT_HAND_RING_FINGER_TIP",
+        "RIGHT_HAND_PINKY_MCP",
+        "RIGHT_HAND_PINKY_PIP",
+        "RIGHT_HAND_PINKY_DIP",
+        "RIGHT_HAND_PINKY_TIP",
     ]
+
+    columns = columns + generateColumns(toGenerate, WITH_Z)
+
+    return columns
+        
 
 def saveData(data):
     """Salva o dataset gerado"""
