@@ -20,6 +20,7 @@ import os
 import cv2
 import uuid
 import math
+import numpy as np
 import pandas as pd
 import mediapipe as mp
 from pathlib import Path
@@ -29,7 +30,6 @@ mp_drawing = mp.solutions.drawing_utils
 mp_holistic = mp.solutions.holistic
 WITH_Z = False
 ignored = 0
-RESIZE = False
 
 DESIRED_HEIGHT = 200
 DESIRED_WIDTH = 200
@@ -73,13 +73,12 @@ def processWord(word, video) -> list:
                 cv2.waitKey()
                 break
 
-            if (RESIZE):
-                h, w = image.shape[:2]
+            h, w = image.shape[:2]
 
-                if h < w:
-                    image = cv2.resize(image, (DESIRED_WIDTH, math.floor(h/(w/DESIRED_WIDTH))))
-                else:
-                    image = cv2.resize(image, (math.floor(w/(h/DESIRED_HEIGHT)), DESIRED_HEIGHT))
+            if h < w:
+                image = cv2.resize(image, (DESIRED_WIDTH, math.floor(h/(w/DESIRED_WIDTH))))
+            else:
+                image = cv2.resize(image, (math.floor(w/(h/DESIRED_HEIGHT)), DESIRED_HEIGHT))
 
             #Obtem dados do vídeo e frame
             fps = capture.get(cv2.CAP_PROP_FPS)
@@ -314,7 +313,10 @@ def createLineHand(landmark, line: list) -> list:
 
 def createImage(results, image, wordPath, video, frame):
     """Cria a imagem para verificação do processo"""
-    annotated_image = image
+    h, w = image.shape[:2]
+
+    annotated_image = np.zeros((DESIRED_WIDTH, DESIRED_HEIGHT, 3), np.uint8)
+    annotated_image[:] = (255, 255, 255)
     mp_drawing.draw_landmarks(annotated_image, results.left_hand_landmarks, mp_holistic.HAND_CONNECTIONS)
     mp_drawing.draw_landmarks(annotated_image, results.right_hand_landmarks, mp_holistic.HAND_CONNECTIONS)
     mp_drawing.draw_landmarks(image=annotated_image, landmark_list=results.pose_landmarks, connections=mp_holistic.POSE_CONNECTIONS)
@@ -328,7 +330,7 @@ def createImage(results, image, wordPath, video, frame):
     if (not os.path.isdir(imageFile)):
         os.makedirs(imageFile)
     
-    imageFile = os.path.join(imageFile, "frame_" + str(frame) + ".jpg" )
+    imageFile = os.path.join(imageFile, "frame_" + str(frame) + ".png" )
 
     imageFile = unicodedata.normalize('NFD', imageFile)\
         .encode('ascii', 'ignore')\
